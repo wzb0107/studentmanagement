@@ -7,6 +7,6 @@ public class TestGitHub {
 	public void test01() {
 		System.out.println("hello github！");
 		System.out.println("hello github2！");
-		System.out.println(github服务器到本地！");
+		System.out.println("github服务器到本地！");
 	}
 }
