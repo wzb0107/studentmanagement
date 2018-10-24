@@ -6,5 +6,7 @@ public class TestGitHub {
 	@Test
 	public void test01() {
 		System.out.println("hello github！");
+		System.out.println("hello github2！");
+		
 	}
 }
