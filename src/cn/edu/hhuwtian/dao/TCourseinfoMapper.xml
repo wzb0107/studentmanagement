@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.hhuwtian.dao.TCourseinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.hhuwtian.pojo.TCourseinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cnumber" property="number" jdbcType="VARCHAR" />
+    <result column="cname" property="name" jdbcType="VARCHAR" />
+    <result column="teacherid" property="teacherid" jdbcType="INTEGER" />
+    <result column="ctime" property="time" jdbcType="VARCHAR" />
+    <result column="cplace" property="place" jdbcType="VARCHAR" />
+    <result column="cmemo" property="memo" jdbcType="VARCHAR" />
+    
+    <association property="teacher" javaType="TTeacher">
+    	<id column="teacherid" property="id" jdbcType="INTEGER" />
+	    <result column="number" property="number" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	    <result column="gender" property="gender" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="arrivedate" property="arrivedate" jdbcType="DATE" />
+	    <result column="cardnumber" property="cardnumber" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="photo" property="photo" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    </association>
+    
+    <collection property="studentCourse" ofType="TStudentselectcourseinfo">
+    	<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="score" property="score"/>
+		<collection property="students" ofType="TStudent">
+			<id column="id" property="id"/>
+			<result column="name" property="name"/>
+		</collection>	    
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, number, name, teacherid, time, place, memo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.hhuwtian.pojo.TCourseinfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_courseinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_courseinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_courseinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.hhuwtian.pojo.TCourseinfoExample" >
+    delete from t_courseinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.hhuwtian.pojo.TCourseinfo" >
+    insert into t_courseinfo (id, number, name, 
+      teacherid, time, place, memo)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{teacherid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{place,jdbcType=VARCHAR}, 
+       #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.hhuwtian.pojo.TCourseinfo" >
+    insert into t_courseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="teacherid != null" >
+        teacherid,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherid != null" >
+        #{teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.edu.hhuwtian.pojo.TCourseinfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_courseinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_courseinfo
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherid != null" >
+        teacherid = #{record.teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.place != null" >
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_courseinfo
+    set id = #{record.id,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      teacherid = #{record.teacherid,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=VARCHAR},
+      place = #{record.place,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.hhuwtian.pojo.TCourseinfo" >
+    update t_courseinfo
+    <set >
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherid != null" >
+        teacherid = #{teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.hhuwtian.pojo.TCourseinfo" >
+    update t_courseinfo
+    set number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      teacherid = #{teacherid,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findCountByQueryVo" resultType="Integer" parameterType="QueryVo">
+  	select
+		count(1)
+		from t_courseinfo
+		<where>
+			<if test="name != null and name != ''">
+				name like "%"#{name}"%"
+			</if>
+		</where>
+  </select>
+	<select id="findCourseInfoListByQueryVo" resultMap="BaseResultMap" parameterType="QueryVo">
+		select c.id cid,c.number cnumber,c.teacherid,c.name cname,c.time ctime,c.place cplace,c.memo cmemo,
+		t.id,t.number,t.name,t.password,t.birthday,t.arrivedate,t.cardnumber,t.phone,t.photo,t.address,t.memo
+		from t_teacher t,t_courseinfo c
+		<where>
+			t.id = c.teacherid
+			<if test="name != null and name != ''">
+				and t.name like "%"#{name}"%"
+			</if>
+			<if test="teacherid != null">
+				and teacherid = #{teacherid}
+			</if>
+		</where>
+		limit #{startRow},#{size}
+	</select>
+	
+	<select id="findAllCourse" resultType="QueryVo">
+		select distinct(number),name 
+		from t_courseinfo 
+	</select>
+	
+	<select id="selectStudentById" resultMap="BaseResultMap" parameterType="QueryVo">
+		select s.name,c.name cname,sc.score
+		from t_student s,t_courseinfo c,t_studentselectcourseinfo sc
+		<where>
+			s.id = sc.studentid
+			and c.id = sc.courseid
+			<if test="courseid != null">
+				and courseid = #{courseid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectCourse" resultMap="BaseResultMap" parameterType="QueryVo">
+		select s.name,c.name cname,sc.score
+		from t_student s,t_courseinfo c,t_studentselectcourseinfo sc
+		<where>
+			s.id = sc.studentid
+			and c.id = sc.courseid
+			and s.number = #{number}
+		</where>		
+	</select>
+</mapper>
